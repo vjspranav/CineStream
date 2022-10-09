@@ -31,6 +31,12 @@ const userSchema = new Schema({
   movies: {
     type: Object,
   },
+  orders: {
+    type: Array,
+  },
+  payments: {
+    type: Array,
+  },
   token: {
     type: String,
   },

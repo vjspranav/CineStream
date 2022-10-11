@@ -1,4 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Topbar from "../components/Topbar";
+
+// My pages
+import Register from "./Register";
 
 const Home = () => {
   return (
@@ -19,8 +23,10 @@ const Series = () => {
 export default function Layout() {
   return (
     <BrowserRouter>
+      <Topbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/register" element={<Register />} />
         <Route exact path="/movies" element={<Movies />} />
         <Route exact path="/series" component={<Series />} />
       </Routes>

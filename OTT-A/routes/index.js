@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 
 router.get("/video/:id", (req, res) => {
   const id = req.params.id;
-  const videoPath = `db/${videos[id].name}`;
+  const videoPath = `Movies/${videos[id].name}`;
   const videoStat = fs.statSync(videoPath);
   const fileSize = videoStat.size;
   const videoRange = req.headers.range;

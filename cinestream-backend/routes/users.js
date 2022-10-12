@@ -229,4 +229,22 @@ router.post("/add-movie", auth, async (req, res) => {
   }
 });
 
+// get request to check if a movie is purchased by the user
+router.get("/check-movie/:movieId", auth, async (req, res) => {
+  const id = req.user.id;
+  const movieId = req.params.movieId;
+
+  const orders = await Order.find({
+    userId: id,
+    movieId: movieId,
+    paid: true,
+  });
+
+  if (orders.length > 0) {
+    res.status(200).json({ purchased: true });
+  } else {
+    res.status(200).json({ purchased: false });
+  }
+});
+
 module.exports = router;

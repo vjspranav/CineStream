@@ -1,18 +1,24 @@
 import { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
+import { useNavigate } from "react-router-dom";
 import ContentScroller from "../components/ContentScroller";
 import content from "./content.json";
 
 const Home = () => {
   // Set interval run every 5 seconds
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <div className="home">
       <div className="home-carousel">
         <Carousel fade activeIndex={index} onSelect={setIndex}>
           {Object.values(content).map((item) => (
-            <Carousel.Item key={item.id}>
+            <Carousel.Item
+              key={item.id}
+              style={{cursor: "pointer"}}
+              onClick={() => navigate(`/movieViewer`, {state: { movieID: item.id }})}
+            >
               <img
                 img-responsive={1}
                 className="d-block"

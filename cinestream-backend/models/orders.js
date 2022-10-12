@@ -17,12 +17,12 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
-  orderId: {
+  paymentId: {
     type: String,
     required: true,
   },
-  paymentId: {
-    type: String,
+  paid: {
+    type: Boolean,
     required: true,
   },
 });

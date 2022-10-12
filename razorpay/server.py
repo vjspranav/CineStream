@@ -1,3 +1,4 @@
+from urllib import response
 from flask import Flask, request
 import razorpay
 
@@ -22,6 +23,16 @@ def create_order():
     # Create order
     order = client.order.create({'amount': amount, 'currency': 'INR', 'receipt': receipt})
 
+    # response = {
+    #     'order_id': order['id'],
+    #     'order_status': order['status'],
+    #     'order_receipt': order['receipt'],
+    #     'order_amount': order['amount'],
+    #     'order_currency': order['currency'],
+    #     'order_created_at': order['created_at']
+    # }
+
+    # return response
     # Return order id
     return order
  

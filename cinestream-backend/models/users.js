@@ -31,6 +31,9 @@ const userSchema = new Schema({
   movies: {
     type: Object,
   },
+  subscription: {
+    type: Object,
+  },
   orders: {
     type: Array,
   },

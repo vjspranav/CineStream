@@ -2,12 +2,19 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
+
+const auth = require("../middleware/auth");
 
 // Load User model
 const User = require("../models/users");
+const Order = require("../models/orders");
 
 // Keys
 const keys = require("../keys/prod");
+const urls = require("../keys/servers");
+
+const ObjectId = require("mongodb").ObjectID;
 
 // @route POST api/users/register
 // @desc Register user
@@ -98,6 +105,128 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ passwordincorrect: "Password incorrect" });
     }
   });
+});
+
+// @route POST api/users/create-order
+// @desc Create order
+router.post("/create-order", auth, async (req, res) => {
+  console.log(req.user.id);
+  const id = req.user.id;
+  const movieId = req.body.movieId;
+  const paymentId = "NA";
+  const amount = req.body.amount;
+
+  const order = new Order({
+    userId: id,
+    movieId: movieId,
+    paymentId: paymentId,
+    paid: false,
+  });
+
+  // RAZORPAY_SERVER_URL is the url of the razorpay server
+  const RAZORPAY_SERVER_URL = urls.RAZORPAY_SERVER_URL;
+  console.log(RAZORPAY_SERVER_URL);
+  axios
+    .post(
+      RAZORPAY_SERVER_URL + "/create_order",
+      {
+        amount: amount,
+      },
+      {
+        headers: {
+          rp_key_id: keys.razorpay.key_id,
+          rp_key_secret: keys.razorpay.key_secret,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(order);
+      order.paymentId = response.data.id;
+      // order.id = req.user._id;
+      order.save().then((order) => {
+        // Add order to user
+        User.findOneAndUpdate(
+          { _id: id },
+          { $push: { orders: order._id } },
+          { new: true }
+        ).then(() => {
+          res.status(200).json(order);
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      res.status(400).json(error);
+    });
+});
+
+// Update payment status
+router.post("/update-payment", auth, async (req, res) => {
+  const id = req.user.id;
+  const paymentId = req.body.paymentId;
+  const status = req.body.status;
+
+  const order = await Order.findOne({ paymentId: paymentId });
+
+  if (order) {
+    if (id === order.userId) {
+      order.paid = status || order.paid;
+      order.save().then((order) => {
+        // Add payment to user
+        User.findOneAndUpdate(
+          { _id: id },
+          {
+            $push: {
+              payments: {
+                paymentId: paymentId,
+                paid: status,
+                orderId: order._id,
+              },
+            },
+          },
+          { new: true }
+        ).then(() => {
+          res.status(200).json(order);
+        });
+      });
+    } else {
+      res.status(400).json({ error: "User not authorized" });
+    }
+  } else {
+    res.status(400).json({ error: "Order not found" });
+  }
+});
+
+// @route POST add movie to user
+// @desc Add movie to user
+router.post("/add-movie", auth, async (req, res) => {
+  const id = req.user.id;
+  const movieId = req.body.movieId;
+
+  const orders = await Order.find({
+    userId: id,
+    movieId: movieId,
+  });
+  console.log(orders);
+  if (orders.length > 0) {
+    console.log(orders);
+    // Check if at least one order is paid
+    const paid = orders.some((order) => order.paid === true);
+    // Add movieId to user
+    if (paid) {
+      User.findOneAndUpdate(
+        { _id: id },
+        { $push: { movies: movieId } },
+        { new: true }
+      ).then((user) => {
+        res.status(200).json(user);
+      });
+    } else {
+      res.status(400).json({ error: "Movie not paid" });
+    }
+  } else {
+    res.status(400).json({ error: "Movie not purchased" });
+  }
 });
 
 module.exports = router;

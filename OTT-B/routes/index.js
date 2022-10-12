@@ -9,6 +9,14 @@ router.get("/", (req, res) => {
   res.json(videos);
 });
 
+/** Get request to check if online
+ * @route GET api/service-status
+ * @access Public
+ */
+router.get("/service-status", (req, res) => {
+  res.status(200).json({ status: "online" });
+});
+
 router.get("/video/:id", (req, res) => {
   const id = req.params.id;
   const videoPath = `Movies/${videos[id].name}`;

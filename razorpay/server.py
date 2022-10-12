@@ -40,6 +40,9 @@ def create_order():
 def hello():
     return 'Hello World'
 
+@app.route('/service-status', methods=['GET'])
+def service_status():
+    return 'Service is running'
 
 if __name__ == '__main__':
     app.run(debug=True)

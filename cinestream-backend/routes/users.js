@@ -21,6 +21,7 @@ const getMovie = async (id) => {
       const response = await axios.get(allOTT[i].url + "/");
       let data = response.data;
       if (id in data) {
+        data[id].url = allOTT[i].url + "/video/" + id;
         return data[id];
       }
     }

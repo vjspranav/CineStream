@@ -55,7 +55,7 @@ const MovieViewer = () => {
           <iframe
             width="100%"
             height="50%"
-            src={"http://localhost:3002/video/" + id}
+            src={movie.url}
             title="Movie"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -64,13 +64,17 @@ const MovieViewer = () => {
           <h1>{movie.name}</h1>
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            width: "100%",
+          }}
+        >
           <img
             src={"data:image/png;base64," + movie.thumbnail}
             alt={movie.name}
             style={{
               width: "100%",
-              //   height: "400px",
+              height: "400px",
               objectFit: "cover",
             }}
           />

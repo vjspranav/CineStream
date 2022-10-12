@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import Constants from "./Constants";
+import "./App.css";
 
 // Custom imports
 import Layout from "./pages/Layout";
@@ -43,7 +44,7 @@ function App() {
         setUser,
       }}
     >
-      <div className="App">
+      <div className="App App-header">
         <Layout />
       </div>
     </CineStreamContext.Provider>

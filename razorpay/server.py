@@ -1,8 +1,12 @@
 from urllib import response
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
+
 import razorpay
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Create an application that creates razorpay order and other things using rest api requests
 
@@ -37,10 +41,12 @@ def create_order():
     return order
  
 @app.route('/hello', methods=['GET'])
+@cross_origin()
 def hello():
     return 'Hello World'
 
 @app.route('/service-status', methods=['GET'])
+@cross_origin()
 def service_status():
     return 'Service is running'
 

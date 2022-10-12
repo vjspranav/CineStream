@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const services = {
   Backend: "http://localhost:3001",
@@ -11,30 +11,21 @@ const services = {
 
 function App() {
   async function checkStatus() {
-    Object.values(services).forEach(async (service) => {
+    Object.keys(services).forEach(async (key) => {
+      const service = services[key];
       try {
+        let tempStatus = status;
         const response = await axios.get(service + "/service-status");
         console.log(response);
+        tempStatus[key] = response.data.status;
+        setStatus(tempStatus);
       } catch (err) {
         console.log(err);
+      } finally {
+        console.log(status);
       }
     });
   }
-
-  //     setStatus((prev) => ({ ...prev, [service]: "Checking..." }));
-  //     let url = services[service];
-  //     const res = await axios.get(url + "/service-status");
-  //     console.log(res);
-  //     if (res.status === 200) {
-  //       setStatus((prev) => ({ ...prev, [service]: "Online" }));
-  //     } else {
-  //       setStatus((prev) => ({
-  //         ...prev,
-  //         [service]: "Offline",
-  //       }));
-  //     }
-  //   }
-  // }
 
   const [status, setStatus] = useState({
     Backend: "Checking",

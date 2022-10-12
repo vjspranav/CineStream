@@ -6,8 +6,8 @@ const cors = require("cors");
 const port = 3002;
 const app = express();
 
-app.use("/", indexRouter);
 app.use(cors());
+app.use("/", indexRouter);
 
 app.listen(port, () => {
   console.log(`OTT-A listening on port ${port}`);

@@ -14,7 +14,22 @@ const Order = require("../models/orders");
 const keys = require("../keys/prod");
 const urls = require("../keys/servers");
 
-const ObjectId = require("mongodb").ObjectID;
+const getMovie = async (id) => {
+  try {
+    allOTT = urls.OTT_SERVERS;
+    for (let i = 0; i < allOTT.length; i++) {
+      const response = await axios.get(allOTT[i].url + "/");
+      let data = response.data;
+      if (id in data) {
+        return data[id];
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return 500;
+  }
+  return false;
+};
 
 // @route POST api/users/register
 // @desc Register user
@@ -234,6 +249,14 @@ router.get("/check-movie/:movieId", auth, async (req, res) => {
   const id = req.user.id;
   const movieId = req.params.movieId;
 
+  const movie = await getMovie(movieId);
+
+  if (movie === 500) {
+    return res.status(500).json({ error: "Internal server error" });
+  } else if (!movie) {
+    return res.status(404).json({ error: "Movie not found" });
+  }
+
   const orders = await Order.find({
     userId: id,
     movieId: movieId,
@@ -241,9 +264,9 @@ router.get("/check-movie/:movieId", auth, async (req, res) => {
   });
 
   if (orders.length > 0) {
-    res.status(200).json({ purchased: true });
+    return res.status(200).json({ purchased: true, ...movie });
   } else {
-    res.status(200).json({ purchased: false });
+    return res.status(200).json({ purchased: false, ...movie });
   }
 });
 

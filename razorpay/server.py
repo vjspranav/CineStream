@@ -12,8 +12,8 @@ def create_order():
     key_id = request.headers.get('rp_key_id')
     key_secret = request.headers.get('rp_key_secret')
     # Get amount from request body
-    amount = request.json.get('amount')
-
+    amount = str(request.json.get('amount'))
+    print(amount)
     # Create razorpay client
     client = razorpay.Client(auth=(key_id, key_secret))
 

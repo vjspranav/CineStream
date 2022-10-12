@@ -14,11 +14,13 @@ function App() {
     Object.keys(services).forEach(async (key) => {
       const service = services[key];
       try {
-        let tempStatus = status;
+        setStatus((prev) => ({ ...prev, [key]: "Checking" }));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await axios.get(service + "/service-status");
         console.log(response);
-        tempStatus[key] = response.data.status;
-        setStatus(tempStatus);
+        setStatus((prev) => {
+          return { ...prev, [key]: response.data.status || response.data };
+        });
       } catch (err) {
         console.log(err);
       } finally {

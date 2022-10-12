@@ -86,7 +86,7 @@ export default function Topbar() {
     <>
       <Navbar sticky="top" bg="dark" variant="dark" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img
               alt=""
               src="/logo.png"
@@ -103,8 +103,8 @@ export default function Topbar() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">Link</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
+              {/* <Nav.Link href="#action2">Link</Nav.Link> */}
             </Nav>
             {/* Create a on hover expand search */}
             <Form className="d-flex">

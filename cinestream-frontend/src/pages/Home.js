@@ -12,9 +12,9 @@ const Home = () => {
       <div className="home-carousel">
         <Carousel fade activeIndex={index} onSelect={setIndex}>
           {Object.values(content).map((item) => (
-            <Carousel.Item>
+            <Carousel.Item key={item.id}>
               <img
-                img-responsive
+                img-responsive={1}
                 className="d-block"
                 src={"data:image/png;base64," + item.thumbnail}
                 alt={item.name}
@@ -32,7 +32,7 @@ const Home = () => {
         </Carousel>
       </div>
       <div className="home-content">
-        <h2>OTT-A</h2>
+        <h2 style={{ marginLeft: "10px" }}>OTT-A</h2>
         <ContentScroller data={content} />
       </div>
       <div className="home-content">

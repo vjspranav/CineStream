@@ -3,14 +3,14 @@ const express = require("express");
 
 const indexRouter = require("./routes/index");
 const cors = require("cors");
-const port = 3002;
+const port = 3003;
 const app = express();
 
 app.use("/", indexRouter);
 app.use(cors());
 
 app.listen(port, () => {
-  console.log(`OTT-A listening on port ${port}`);
+  console.log(`OTT-B listening on port ${port}`);
 });
 
 module.exports = app;

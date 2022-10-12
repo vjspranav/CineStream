@@ -84,7 +84,7 @@ export default function Topbar() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar sticky="top" bg="dark" variant="dark" expand="lg">
         <Container fluid>
           <Navbar.Brand href="#home">
             <img

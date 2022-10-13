@@ -97,49 +97,86 @@ const MovieViewer = () => {
                 )
                 .then(async (res) => {
                   let payment = res.data;
-                  //   We take payment id and run it through razor pay here and use the result
-                  const paymentStatus = true;
-                  // Now to update-payment
-                  await axios
-                    .post(
-                      Constants.BACKEND_URL + "/users/update-payment",
-                      {
-                        paymentId: payment.paymentId,
-                        status: paymentStatus,
-                      },
-                      {
-                        headers: { "x-access-token": user.token },
-                      }
-                    )
-                    .then(async (res) => {
-                      let movie = res.data;
-                      // Now to add-movie to user
+                  console.log(payment);
+                  const order = payment.paymentId;
+                  const options = {
+                    key: "rzp_test_FR7wXHov7weZoB", // Enter the Key ID generated from the Dashboard
+                    amount: movie.cost, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    currency: "INR",
+                    name: "Cine Stream",
+                    description: "Purchasing " + movie.name,
+                    order_id: order, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                    // callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
+                    // prefill: {
+                    //   name: "Gaurav Kumar",
+                    //   email: "gaurav.kumar@example.com",
+                    //   contact: "9999999999",
+                    // },
+                    notes: {
+                      address: "Razorpay Corporate Office",
+                    },
+                    theme: {
+                      color: "#3399cc",
+                    },
+                    handler: async (response) => {
+                      console.log(response);
+                      let paymentStatus = true;
+                      alert("Payment successful");
+                      // const paymentStatus = true;
+                      // Now to update-payment
                       await axios
                         .post(
-                          Constants.BACKEND_URL + "/users/add-movie",
+                          Constants.BACKEND_URL + "/users/update-payment",
                           {
-                            movieId: movie.movieId,
+                            paymentId: payment.paymentId,
+                            status: paymentStatus,
                           },
                           {
-                            headers: { "x-access-token": user.token },
+                            headers: {
+                              "x-access-token": user.token,
+                            },
                           }
                         )
-                        .then(async () => {
-                          alert("Movie added to your library");
-                          // sleep for 2 seconds
-                          await new Promise((resolve) =>
-                            setTimeout(resolve, 2000)
-                          );
-                          window.location.reload();
+                        .then(async (res) => {
+                          let movie = res.data;
+                          // Now to add-movie to user
+                          await axios
+                            .post(
+                              Constants.BACKEND_URL + "/users/add-movie",
+                              {
+                                movieId: movie.movieId,
+                              },
+                              {
+                                headers: {
+                                  "x-access-token": user.token,
+                                },
+                              }
+                            )
+                            .then(async () => {
+                              alert("Movie added to your library");
+                              // sleep for 2 seconds
+                              await new Promise((resolve) =>
+                                setTimeout(resolve, 2000)
+                              );
+                              window.location.reload();
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
                         })
                         .catch((err) => {
                           console.log(err);
                         });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                    },
+                  };
+                  const rzp1 = new window.Razorpay(options);
+                  rzp1.open();
+                  rzp1.on("payment.failed", async function (response) {
+                    console.log(response);
+                    alert("Payment failed");
+                  });
                 })
+
                 .catch((err) => {
                   console.log(err);
                 });

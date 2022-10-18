@@ -23,9 +23,9 @@ const formatTime = (time) => {
   return timeString;
 };
 
-const ContentScroller = ({ data, thumbnails }) => {
+const ContentScroller = ({ data }) => {
   // const navigate = useNavigate();
-
+  // console.log(data);
   return (
     <CardGroup className="d-flex flex-row flex-nowrap overflow-auto">
       {Object.values(data).map((item) => (
@@ -44,11 +44,7 @@ const ContentScroller = ({ data, thumbnails }) => {
           >
             <Card.Img
               variant="top"
-              src={
-                thumbnails[item.id]
-                  ? "data:image/png;base64," + thumbnails[item.id]
-                  : "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
-              }
+              src={item.url + "/thumbnails/" + item.name + ".png"}
             />
             <Card.Body
               style={{

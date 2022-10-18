@@ -14,28 +14,7 @@ const Home = () => {
   // const navigate = useNavigate();
   const [data, setData] = useState({});
   const [content, setContent] = useState([]);
-  const [thumbnails, setThumbnails] = useState({});
   useEffect(() => {
-    const setImages = (content) => {
-      // for each content do a get request to content.url/video-details/id
-      // add thumbnail to content
-
-      let tempContent = content;
-      for (let i in tempContent) {
-        axios
-          .get(tempContent[i].url + "/video-details/" + tempContent[i].id)
-          .then((res) => {
-            console.log(res.data);
-            // tempContent[i].thumbnail = res.data.thumbnail;
-            setThumbnails((prev) => {
-              return { ...prev, [tempContent[i].id]: res.data.thumbnail };
-            });
-          });
-      }
-      setContent(tempContent);
-      console.log(tempContent);
-    };
-
     const init = async () => {
       await axios.get(Constants.BACKEND_URL + "/all-content").then((res) => {
         console.log(res.data);
@@ -53,7 +32,6 @@ const Home = () => {
         console.log(tempContent);
         setContent(tempContent);
         setLoading(false);
-        setImages(tempContent);
       });
     };
 
@@ -91,11 +69,7 @@ const Home = () => {
               <img
                 img-responsive={1}
                 className="d-block"
-                src={
-                  thumbnails[item.id]
-                    ? "data:image/png;base64," + thumbnails[item.id]
-                    : "https://img.freepik.com/premium-vector/progress-bar-doodle-sketch-style-loading-icon-image-hand-drawn-vector-illustration_356415-1238.jpg"
-                }
+                src={item.url + "/thumbnails/" + item.name + ".png"}
                 alt={item.name}
                 style={{
                   width: "100%",
@@ -120,7 +94,7 @@ const Home = () => {
             >
               {key}
             </h2>
-            <ContentScroller data={data[key]} thumbnails={thumbnails} />
+            <ContentScroller data={data[key]} />
           </div>
         );
       })}

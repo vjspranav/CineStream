@@ -35,7 +35,7 @@ const ContentScroller = ({ data }) => {
             style={{
               minWidth: "300px",
               maxWidth: "350px",
-              minHeight: "300px",
+              minHeight: "350px",
               cursor: "pointer",
             }}
             onClick={() => {

@@ -19,8 +19,8 @@ def create_order():
     auth = request.headers['Authorization']
     auth = ast.literal_eval(auth)
 
-    key_id = auth['key_id']
-    key_secret = auth['key_secret']
+    key_id = auth['rp_key_id']
+    key_secret = auth['rp_key_secret']
 
     # Get amount from request body
     amount = str(request.json.get('amount'))

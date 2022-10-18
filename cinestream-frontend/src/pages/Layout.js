@@ -30,7 +30,7 @@ const Footer = () => {
             fontSize: "15px",
           }}
         >
-          CopyRight &copy; 2021 CineStream
+          CopyRight &copy; 2022 CineStream
         </Navbar.Brand>
       </Container>
     </Navbar>

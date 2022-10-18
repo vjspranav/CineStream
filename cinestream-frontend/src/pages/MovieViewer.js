@@ -69,7 +69,7 @@ const MovieViewer = () => {
           }}
         >
           <img
-            src={movie.otturl + "/images/" + movie.name + ".png"}
+            src={movie.otturl + "/thumbnails/" + movie.name + ".png"}
             alt={movie.name}
             style={{
               width: "100%",

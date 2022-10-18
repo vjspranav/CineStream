@@ -1,12 +1,12 @@
 import "./App.css";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const services = {
-  Backend: "http://localhost:3001",
-  "OTT-A": "http://localhost:3002",
-  "OTT-B": "http://localhost:3003",
-  Razorpay: "http://127.0.0.1:5000",
+  Backend: "https://api.cinestream.ml",
+  "OTT-A": "https://ott-a.cinestream.ml",
+  "OTT-B": "https://ott-b.cinestream.ml",
+  Razorpay: "https://rp.cinestream.ml",
 };
 
 function App() {
@@ -15,12 +15,24 @@ function App() {
       const service = services[key];
       try {
         setStatus((prev) => ({ ...prev, [key]: "Checking" }));
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const response = await axios.get(service + "/service-status");
-        console.log(response);
-        setStatus((prev) => {
-          return { ...prev, [key]: response.data.status || response.data };
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await only for 5 seconds
+        const response = await axios.get(service + "/service-status", {
+          timeout: 5000,
         });
+        console.log(response);
+        // If timeout, then response will be undefined
+        if (response) {
+          setStatus((prev) => ({
+            ...prev,
+            [key]: response.data.status || response.data,
+          }));
+        } else {
+          setStatus((prev) => ({
+            ...prev,
+            [key]: "Service Unavailable",
+          }));
+        }
       } catch (err) {
         console.log(err);
       } finally {
@@ -28,6 +40,10 @@ function App() {
       }
     });
   }
+
+  useEffect(() => {
+    checkStatus();
+  });
 
   const [status, setStatus] = useState({
     Backend: "Checking",

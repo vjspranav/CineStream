@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const services = {
   Backend: "https://api.cinestream.ml",
@@ -9,48 +9,45 @@ const services = {
   Razorpay: "https://rp.cinestream.ml",
 };
 
-function App() {
-  async function checkStatus() {
-    Object.keys(services).forEach(async (key) => {
-      const service = services[key];
-      try {
-        setStatus((prev) => ({ ...prev, [key]: "Checking" }));
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
-        // await only for 5 seconds
-        const response = await axios.get(service + "/service-status", {
-          timeout: 5000,
-        });
-        console.log(response);
-        // If timeout, then response will be undefined
-        if (response) {
-          setStatus((prev) => ({
-            ...prev,
-            [key]: response.data.status || response.data,
-          }));
-        } else {
-          setStatus((prev) => ({
-            ...prev,
-            [key]: "Service Unavailable",
-          }));
-        }
-      } catch (err) {
-        console.log(err);
-      } finally {
-        console.log(status);
+async function checkStatus(status, setStatus) {
+  Object.keys(services).forEach(async (key) => {
+    const service = services[key];
+    try {
+      setStatus((prev) => ({ ...prev, [key]: "Checking" }));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await only for 5 seconds
+      const response = await axios.get(service + "/service-status", {
+        timeout: 5000,
+      });
+      console.log(response);
+      // If timeout, then response will be undefined
+      if (response) {
+        setStatus((prev) => ({
+          ...prev,
+          [key]: response.data.status || response.data,
+        }));
+      } else {
+        setStatus((prev) => ({
+          ...prev,
+          [key]: "Service Unavailable",
+        }));
       }
-    });
-  }
-
-  useEffect(() => {
-    checkStatus();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      console.log(status);
+    }
   });
+}
 
+function App() {
   const [status, setStatus] = useState({
-    Backend: "Checking",
-    "OTT-A": "Checking",
-    "OTT-B": "Checking",
-    Razorpay: "Checking",
+    Backend: "NA",
+    "OTT-A": "NA",
+    "OTT-B": "NA",
+    Razorpay: "NA",
   });
+
   return (
     <div
       className="App App-header"
@@ -76,7 +73,13 @@ function App() {
         <h3>OTT-B: {status["OTT-B"]}</h3>
         <h3>Razorpay: {status.Razorpay}</h3>
       </div>
-      <button onClick={checkStatus}>Check Status</button>
+      <button
+        onClick={() => {
+          checkStatus(status, setStatus);
+        }}
+      >
+        Check Status
+      </button>
     </div>
   );
 }

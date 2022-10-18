@@ -1,6 +1,7 @@
 from urllib import response
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
+import ast
 
 import razorpay
 
@@ -13,8 +14,14 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/create_order', methods=['POST'])
 def create_order():
     # Get key_id and key_secret from request header
-    key_id = request.headers.get('rp_key_id')
-    key_secret = request.headers.get('rp_key_secret')
+    # key_id = request.headers.get('rp_key_id')
+    # key_secret = request.headers.get('rp_key_secret')
+    auth = request.headers['Authorization']
+    auth = ast.literal_eval(auth)
+
+    key_id = auth['key_id']
+    key_secret = auth['key_secret']
+
     # Get amount from request body
     amount = str(request.json.get('amount'))
     print(amount)

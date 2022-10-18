@@ -151,8 +151,10 @@ router.post("/create-order", auth, async (req, res) => {
       },
       {
         headers: {
-          rp_key_id: keys.razorpay.key_id,
-          rp_key_secret: keys.razorpay.key_secret,
+          Authorization: JSON.stringify({
+            rp_key_id: keys.razorpay.key_id,
+            rp_key_secret: keys.razorpay.key_secret,
+          }),
         },
       }
     )

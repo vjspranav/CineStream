@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { SpinnerInfinity } from "spinners-react";
 import ContentScroller from "../components/ContentScroller";
 import Constants from "../Constants";
@@ -11,7 +11,7 @@ const Home = () => {
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [data, setData] = useState({});
   const [content, setContent] = useState([]);
   const [thumbnails, setThumbnails] = useState({});
@@ -84,9 +84,9 @@ const Home = () => {
             <Carousel.Item
               key={item.id}
               style={{ cursor: "pointer" }}
-              onClick={() =>
-                navigate(`/movieViewer/${item.id}`, { replace: true })
-              }
+              onClick={() => {
+                window.location.href = item.url + "/movieViewer/" + item.id;
+              }}
             >
               <img
                 img-responsive={1}

@@ -1,6 +1,6 @@
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 // Function that takes time in seconds and returns a string in the format of x hours, y minutes, z seconds
 const formatTime = (time) => {
@@ -24,7 +24,7 @@ const formatTime = (time) => {
 };
 
 const ContentScroller = ({ data, thumbnails }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <CardGroup className="d-flex flex-row flex-nowrap overflow-auto">
@@ -38,7 +38,9 @@ const ContentScroller = ({ data, thumbnails }) => {
               minHeight: "300px",
               cursor: "pointer",
             }}
-            onClick={() => navigate(`/movieViewer/${item.id}`)}
+            onClick={() => {
+              window.location.href = window.location + "movieViewer/" + item.id;
+            }}
           >
             <Card.Img
               variant="top"

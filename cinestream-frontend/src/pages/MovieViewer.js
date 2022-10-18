@@ -9,7 +9,7 @@ const MovieViewer = () => {
   const [movie, setMovie] = useState({
     purchased: false,
   });
-
+  const [thumbnail, setThumbnail] = useState("");
   const { loggedIn, user } = useContext(CineStreamContext);
   //   const [url, setUrl] = useState("");
 
@@ -23,6 +23,11 @@ const MovieViewer = () => {
         })
         .then((res) => {
           setMovie(res.data);
+          axios
+            .get(res.data.otturl + "/video-details/" + res.data.id)
+            .then((res) => {
+              setThumbnail(res.data.thumbnail);
+            });
           console.log(res.data);
         })
         .catch((err) => {
@@ -70,7 +75,11 @@ const MovieViewer = () => {
           }}
         >
           <img
-            src={"data:image/png;base64," + movie.thumbnail}
+            src={
+              thumbnail
+                ? "data:image/png;base64," + thumbnail
+                : "https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
+            }
             alt={movie.name}
             style={{
               width: "100%",

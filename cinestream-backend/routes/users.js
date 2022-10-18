@@ -22,6 +22,7 @@ const getMovie = async (id) => {
       let data = response.data;
       if (id in data) {
         data[id].url = allOTT[i].url + "/video/" + id;
+        data[id].otturl = allOTT[i].url;
         return data[id];
       }
     }

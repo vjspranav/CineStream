@@ -23,7 +23,7 @@ const formatTime = (time) => {
   return timeString;
 };
 
-const ContentScroller = ({ data }) => {
+const ContentScroller = ({ data, thumbnails }) => {
   const navigate = useNavigate();
 
   return (
@@ -42,7 +42,11 @@ const ContentScroller = ({ data }) => {
           >
             <Card.Img
               variant="top"
-              src={"data:image/png;base64," + item.thumbnail}
+              src={
+                thumbnails[item.id]
+                  ? "data:image/png;base64," + thumbnails[item.id]
+                  : "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
+              }
             />
             <Card.Body
               style={{

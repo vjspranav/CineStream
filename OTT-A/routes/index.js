@@ -6,7 +6,22 @@ const fs = require("fs");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.json(videos);
+  // Remove thumbnail from each video
+  // videos is an object
+  const videosWithoutThumbnails = Object.keys(videos).reduce((acc, key) => {
+    const { thumbnail, ...video } = videos[key];
+    acc[key] = video;
+    return acc;
+  }, {});
+  res.send(videosWithoutThumbnails);
+});
+
+router.get("/video-details/:id", (req, res) => {
+  const video = videos[req.params.id];
+  if (!video) {
+    return res.status(404).send("The video with the given ID was not found.");
+  }
+  res.send(video);
 });
 
 /** Get request to check if online

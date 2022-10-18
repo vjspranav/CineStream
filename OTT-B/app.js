@@ -7,6 +7,7 @@ const port = 3003;
 const app = express();
 
 app.use(cors());
+app.use("/images", express.static(__dirname + "/Movies/images"));
 app.use("/thumbnails", express.static(__dirname + "/Movies/thumbnails"));
 app.use("/", indexRouter);
 

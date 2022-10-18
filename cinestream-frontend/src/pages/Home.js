@@ -63,7 +63,8 @@ const Home = () => {
               key={item.id}
               style={{ cursor: "pointer" }}
               onClick={() => {
-                window.location.href = item.url + "/movieViewer/" + item.id;
+                window.location.href =
+                  window.location + "/movieViewer/" + item.id;
               }}
             >
               <img

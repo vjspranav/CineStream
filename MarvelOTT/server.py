@@ -34,6 +34,8 @@ async def video(request: Request, response: Response, range: str = Header(None))
         video.seek(start)
         data = video.read(end - start)
         filesize = str(video_path.stat().st_size)
+        if end >= int(filesize):
+            end = int(filesize)
         headers = {
             'Content-Range': f'bytes {str(start)}-{str(end)}/{filesize}',
             'Accept-Ranges': 'bytes'

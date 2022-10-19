@@ -41,7 +41,9 @@ router.get("/video/:id", (req, res) => {
   if (videoRange) {
     const parts = videoRange.replace(/bytes=/, "").split("-");
     const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const end = parts[1]
+      ? parseInt(parts[1], 10)
+      : Math.min(start + 10 ** 6, fileSize - 1);
     const chunksize = end - start + 1;
     const file = fs.createReadStream(videoPath, { start, end });
     const header = {

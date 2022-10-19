@@ -18,7 +18,7 @@ for i, movie in enumerate(movies):
         'id': 'marvel' + str(i),
         'name': movie,
         'thumbnail': movie.replace('.mp4', '.mp4.png'),
-        'duration': duration,
+        'duration': str(duration) + 'secs',
         'cost': 1000
     }
 

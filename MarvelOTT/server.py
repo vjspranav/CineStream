@@ -2,6 +2,8 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi import Request, Response
 from fastapi import Header
+from fastapi.staticfiles import StaticFiles
+
 import json
 import uvicorn
 
@@ -11,9 +13,11 @@ CHUNK_SIZE = 1024*1024
 with open('content.json') as f:
     content = json.load(f)
 
+app.mount("/thumbnails", StaticFiles(directory="Movies/thumbnails"), name="Thumbnails")
+
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return content
 
 @app.get("/video/{video_id}")
 async def video(request: Request, response: Response, range: str = Header(None)):

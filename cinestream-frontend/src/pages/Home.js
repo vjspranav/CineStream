@@ -87,10 +87,16 @@ const Home = () => {
       </div>
       {Object.keys(data).map((key) => {
         return (
-          <div key={key}>
+          <div
+            key={key}
+            style={{
+              margin: "0 10px",
+            }}
+          >
             <h2
               style={{
-                marginLeft: "10px",
+                marginLeft: "20px",
+                marginTop: "20px",
               }}
             >
               {key}

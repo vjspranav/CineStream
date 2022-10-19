@@ -62,6 +62,7 @@ export default function Topbar() {
                     setLoggedIn(true);
                     localStorage.setItem("user", JSON.stringify(response.data));
                     handleClose();
+                    window.location.reload();
                   })
                   .catch((error) => {
                     console.log(error);

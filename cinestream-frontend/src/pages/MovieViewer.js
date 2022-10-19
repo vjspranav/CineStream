@@ -14,22 +14,23 @@ const MovieViewer = () => {
 
   useEffect(() => {
     const init = async () => {
-      let curUser = JSON.parse(localStorage.getItem("user"));
-
-      await axios
-        .get(Constants.BACKEND_URL + "/users/check-movie/" + id, {
-          headers: { "x-access-token": curUser.token },
-        })
-        .then((res) => {
-          setMovie(res.data);
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (loggedIn) {
+        let curUser = JSON.parse(localStorage.getItem("user"));
+        await axios
+          .get(Constants.BACKEND_URL + "/users/check-movie/" + id, {
+            headers: { "x-access-token": curUser.token },
+          })
+          .then((res) => {
+            setMovie(res.data);
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     };
     init();
-  }, [id]);
+  }, [id, loggedIn]);
 
   if (!loggedIn) {
     return <div className="movie-viewer">Please login to view this movie</div>;
@@ -106,11 +107,10 @@ const MovieViewer = () => {
                     description: "Purchasing " + movie.name,
                     order_id: order, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                     // callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
-                    // prefill: {
-                    //   name: "Gaurav Kumar",
-                    //   email: "gaurav.kumar@example.com",
-                    //   contact: "9999999999",
-                    // },
+                    prefill: {
+                      name: user.name,
+                      email: user.email,
+                    },
                     notes: {
                       address: "Razorpay Corporate Office",
                     },

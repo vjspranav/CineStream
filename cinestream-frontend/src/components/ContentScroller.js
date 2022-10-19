@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Card from "react-bootstrap/Card";
 import CardGroup from "react-bootstrap/CardGroup";
 // import { useNavigate } from "react-router-dom";
@@ -26,32 +27,85 @@ const formatTime = (time) => {
 const ContentScroller = ({ data }) => {
   // const navigate = useNavigate();
   // console.log(data);
+  let temp = {};
+  Object.keys(data).forEach((key) => {
+    temp[key.id] = false;
+  });
+
+  const [hover, setHover] = useState(temp);
+
   return (
-    <CardGroup className="d-flex flex-row flex-nowrap overflow-auto">
+    <CardGroup
+      className="d-flex flex-row flex-nowrap overflow-auto"
+      style={{
+        width: "100%",
+        padding: "10px 0",
+      }}
+    >
       {Object.values(data).map((item) => (
-        <div key={item.id}>
+        <div
+          key={item.id}
+          style={{
+            margin: "0 10px",
+          }}
+        >
           <Card
             className="mx-2"
-            style={{
-              minWidth: "300px",
-              maxWidth: "350px",
-              minHeight: "350px",
-              cursor: "pointer",
-            }}
+            style={
+              hover[item.id]
+                ? {
+                    minWidth: "300px",
+                    maxWidth: "300px",
+                    minHeight: "350px",
+                    cursor: "pointer",
+                    boxShadow: "0 0 10px 0 rgba(255, 255, 255, 0.5)",
+                  }
+                : {
+                    minWidth: "300px",
+                    maxWidth: "300px",
+                    minHeight: "350px",
+                  }
+            }
             onClick={() => {
               window.location.href = window.location + "movieViewer/" + item.id;
             }}
           >
             <Card.Img
+              onMouseEnter={() => {
+                setHover({ ...hover, [item.id]: true });
+              }}
+              onMouseLeave={() => {
+                setHover({ ...hover, [item.id]: false });
+              }}
+              style={{
+                height: "200px",
+                objectFit: "cover",
+              }}
               variant="top"
               src={item.url + "/thumbnails/" + item.name + ".png"}
             />
             <Card.Body
+              onMouseEnter={() => {
+                setHover({ ...hover, [item.id]: true });
+              }}
+              onMouseLeave={() => {
+                setHover({ ...hover, [item.id]: false });
+              }}
               style={{
                 color: "black",
               }}
             >
-              <Card.Title>{item.name}</Card.Title>
+              {/* Scroll text if longer than 20 */}
+              <Card.Title
+                style={{
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {item.name}
+              </Card.Title>
+
               <Card.Text>{"Price: " + item.cost + " INR"}</Card.Text>
               <Card.Text>
                 {"Duration: " +

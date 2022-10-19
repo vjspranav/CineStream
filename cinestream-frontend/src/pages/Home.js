@@ -90,7 +90,7 @@ const Home = () => {
           <div
             key={key}
             style={{
-              margin: "0 10px",
+              margin: "0 0",
             }}
           >
             <h2

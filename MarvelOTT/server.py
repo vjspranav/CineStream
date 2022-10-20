@@ -3,11 +3,18 @@ from fastapi import FastAPI
 from fastapi import Request, Response
 from fastapi import Header
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 import json
 import uvicorn
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*']
+)
+
 CHUNK_SIZE = 1024*1024
 
 with open('content.json') as f:

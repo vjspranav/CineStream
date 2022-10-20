@@ -42,13 +42,18 @@ router.get("/all-content", async (req, res) => {
   try {
     allOTT = urls.OTT_SERVERS;
     for (let i = 0; i < allOTT.length; i++) {
-      const response = await axios.get(allOTT[i].url + "/");
-      // Add main ott url to each movie
-      let movies = response.data;
-      for (let movie in movies) {
-        movies[movie].url = allOTT[i].url;
+      try {
+        const response = await axios.get(allOTT[i].url + "/");
+        // Add main ott url to each movie
+        let movies = response.data;
+        for (let movie in movies) {
+          movies[movie].url = allOTT[i].url;
+        }
+        data[allOTT[i].name] = movies;
+      } catch (err) {
+        console.log(err);
+        continue;
       }
-      data[allOTT[i].name] = movies;
     }
   } catch (err) {
     console.log(err);

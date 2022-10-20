@@ -26,6 +26,10 @@ app.mount("/thumbnails", StaticFiles(directory="Movies/thumbnails"), name="Thumb
 async def root():
     return content
 
+@app.get("/service-status")
+async def service_status():
+    return {"status": "Online"}
+    
 @app.get("/video/{video_id}")
 async def video(request: Request, response: Response, range: str = Header(None)):
     video_id = request.path_params['video_id']

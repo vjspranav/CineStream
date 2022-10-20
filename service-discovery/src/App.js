@@ -6,6 +6,7 @@ const services = {
   Backend: "https://api.cinestream.ml",
   "OTT-A": "https://ott-a.cinestream.ml",
   "OTT-B": "https://ott-b.cinestream.ml",
+  Marvel: "https://marvel-ott.cinestream.ml",
   Razorpay: "https://rp.cinestream.ml",
 };
 

@@ -46,6 +46,7 @@ function App() {
     Backend: "NA",
     "OTT-A": "NA",
     "OTT-B": "NA",
+    Marvel: "NA",
     Razorpay: "NA",
   });
 
@@ -72,6 +73,7 @@ function App() {
         <h3>Backend: {status.Backend}</h3>
         <h3>OTT-A: {status["OTT-A"]}</h3>
         <h3>OTT-B: {status["OTT-B"]}</h3>
+        <h3>Marvel: {status.Marvel}</h3>
         <h3>Razorpay: {status.Razorpay}</h3>
       </div>
       <button

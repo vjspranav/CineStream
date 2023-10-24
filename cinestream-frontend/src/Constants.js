@@ -1,5 +1,5 @@
 const Constants = {
-  BACKEND_URL: "https://api.cinestream.ml",
+  BACKEND_URL: "http://localhost:3001",
 };
 
 export default Constants;

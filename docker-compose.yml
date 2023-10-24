@@ -1,0 +1,49 @@
+version: "3"
+services:
+  marvelott:
+    build: ./MarvelOTT
+    ports:
+      - "3005:3005"
+    restart: on-failure
+
+  ott-a:
+    build: ./OTT-A
+    ports:
+      - "3002:3002"
+    restart: on-failure
+
+  ott-b:
+    build: ./OTT-B
+    ports:
+      - "3003:3003"
+    restart: on-failure
+
+  cinestream-backend:
+    build: ./cinestream-backend
+    ports:
+      - "3001:3001"
+    restart: on-failure
+
+  razorpay:
+    build: ./razorpay
+    ports:
+      - "5001:5001"
+    restart: on-failure
+
+  cinestream-frontend:
+    build: ./cinestream-frontend
+    ports:
+      - "3000:3000"
+    restart: on-failure
+
+  service-discovery:
+    build: ./service-discovery
+    ports:
+      - "3004:3004"
+    restart: on-failure
+
+    network:
+      - cinestream-network
+
+networks:
+  cinestream-network:
